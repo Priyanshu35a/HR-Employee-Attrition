@@ -4,11 +4,11 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.ensemble import RandomForestClassifier
 import joblib
 
-print("📋 Loading HR Attrition data...")
+print(" Loading HR Attrition data...")
 
 # Load the dataset
 df_raw = pd.read_csv('HR-Employee-Attrition.csv')
-print(f"✅ Data loaded: {df_raw.shape}")
+print(f" Data loaded: {df_raw.shape}")
 
 # Drop unnecessary columns
 df = df_raw.drop(columns=['EmployeeCount', 'Over18', 'StandardHours', 'EmployeeNumber'])
@@ -20,7 +20,7 @@ X_raw = df.drop(columns=['Attrition'])
 # Encode categorical variables
 X_encoded = pd.get_dummies(X_raw, drop_first=True)
 
-print(f"📊 Training Random Forest model with {X_encoded.shape[0]} samples and {X_encoded.shape[1]} features...")
+print(f" Training Random Forest model with {X_encoded.shape[0]} samples and {X_encoded.shape[1]} features...")
 
 # Train Random Forest with adapted parameters for class imbalance
 rf_model = RandomForestClassifier(
@@ -32,14 +32,14 @@ rf_model = RandomForestClassifier(
 )
 
 rf_model.fit(X_encoded, y)
-print(f"✅ Model trained successfully!")
+print(f" Model trained successfully!")
 
 # Save the model
 joblib.dump(rf_model, 'attrition_model.pkl')
-print(f"✅ Model saved to 'attrition_model.pkl'")
+print(f" Model saved to 'attrition_model.pkl'")
 
 # Verify the file was created
 import os
 if os.path.exists('attrition_model.pkl'):
     file_size = os.path.getsize('attrition_model.pkl')
-    print(f"✅ File verified: {file_size} bytes")
+    print(f" File verified: {file_size} bytes")

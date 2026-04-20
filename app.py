@@ -13,7 +13,7 @@ from sklearn.metrics import (
 # ─── Page Config ────────────────────────────────────────────────────────────────
 st.set_page_config(
     page_title="HR Attrition Dashboard",
-    page_icon="🎯",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -23,21 +23,21 @@ st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
     
-    /* 1) Dark Mode Background & Global Fonts */
+    /* 1) Light Mode Background & Global Fonts */
     [data-testid="stAppViewContainer"], .stApp {
-        background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%) !important;
+        background: linear-gradient(135deg, #f3f4f6 0%, #ffffff 100%) !important;
         background-attachment: fixed !important;
         font-family: 'Inter', sans-serif !important;
-        color: #f3f4f6 !important;
+        color: #1f2937 !important;
     }
     
     html, body, [class*="css"] {
         font-family: 'Inter', sans-serif !important;
     }
 
-    /* Target main text colors to ensure visibility on dark bg */
+    /* Target main text colors to ensure visibility on light bg */
     h1, h2, h3, h4, h5, h6, p, .stMarkdown, .stText {
-        color: #f3f4f6 !important;
+        color: #1f2937 !important;
     }
     
     .main-header {
@@ -51,7 +51,6 @@ st.markdown("""
         text-align: center;
         margin-bottom: 0.5rem;
         padding-top: 1rem;
-        text-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
     }
     
     @keyframes gradient-animation {
@@ -61,59 +60,59 @@ st.markdown("""
     }
     
     .sub-header {
-        color: #cbd5e1 !important;
+        color: #4b5563 !important;
         font-size: 1.1rem;
         font-weight: 400;
         text-align: center;
         margin-bottom: 2rem;
     }
     
-    /* GLASSMORPHISM CARDS */
+    /* GLASSMORPHISM CARDS - LIGHT THEME */
     [data-testid="metric-container"], .stExpander, div[data-testid="stForm"] {
-        background: rgba(30, 27, 75, 0.4) !important;
+        background: rgba(255, 255, 255, 0.7) !important;
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(209, 213, 219, 0.5);
         padding: 1.2rem 1.5rem;
         border-radius: 16px;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
         transition: all 0.3s ease;
     }
     [data-testid="metric-container"]:hover {
         transform: translateY(-4px);
-        box-shadow: 0 12px 40px rgba(139, 92, 246, 0.25);
+        box-shadow: 0 12px 40px rgba(139, 92, 246, 0.15);
         border-color: rgba(139, 92, 246, 0.5);
     }
     
     [data-testid="stMetricValue"] {
         font-size: 2.2rem !important;
         font-weight: 700 !important;
-        color: #fff !important;
+        color: #111827 !important;
     }
     [data-testid="stMetricLabel"] {
-        color: #a78bfa !important;
+        color: #4b5563 !important;
     }
     
-    /* Neon Button */
+    /* Button */
     .stButton > button {
-        background: rgba(139, 92, 246, 0.1) !important;
+        background: rgba(255, 255, 255, 0.9) !important;
         border: 1px solid #8b5cf6 !important;
-        color: #fff !important;
+        color: #8b5cf6 !important;
         border-radius: 12px;
         transition: all 0.3s ease;
         font-weight: 600;
         backdrop-filter: blur(8px);
-        box-shadow: 0 0 10px rgba(139, 92, 246, 0.2);
+        box-shadow: 0 4px 6px rgba(139, 92, 246, 0.1);
     }
     .stButton > button:hover {
         background: #8b5cf6 !important;
         color: #fff !important;
         transform: scale(1.02);
-        box-shadow: 0 4px 20px rgba(139, 92, 246, 0.6);
+        box-shadow: 0 8px 20px rgba(139, 92, 246, 0.3);
     }
     
     .section-title {
-        color: #cbd5e1;
+        color: #374151;
         font-size: 1.25rem;
         font-weight: 600;
         border-bottom: 2px solid rgba(236, 72, 153, 0.3);
@@ -126,12 +125,11 @@ st.markdown("""
         font-size: 1.1rem;
         font-weight: 600;
         padding: 1rem 0;
-        color: #9ca3af;
+        color: #6b7280;
     }
     .stTabs [aria-selected="true"] {
-        color: #fff !important;
+        color: #111827 !important;
         border-bottom-color: #ec4899 !important;
-        text-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
     }
     
     /* Make inputs look glass-like too */
@@ -139,12 +137,12 @@ st.markdown("""
         background: transparent !important;
     }
     
-    /* Enhance data tables for dark mode */
+    /* Enhance data tables for light mode */
     [data-testid="stDataFrame"] {
-        background: rgba(30, 27, 75, 0.4) !important;
+        background: rgba(255, 255, 255, 0.7) !important;
         backdrop-filter: blur(12px);
         border-radius: 8px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(209, 213, 219, 0.5);
     }
 </style>
 """, unsafe_allow_html=True)
@@ -173,15 +171,15 @@ model, pca, expected_columns, X_raw, X_pca, y_true, df_full = load_components()
 
 
 # ─── Header ─────────────────────────────────────────────────────────────────────
-st.markdown('<div class="main-header">🎯 HR Employee Attrition Dashboard</div>', unsafe_allow_html=True)
+st.markdown('<div class="main-header"> HR Employee Attrition Dashboard</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-header">Predict, explore, and understand employee attrition using Machine Learning.</div>', unsafe_allow_html=True)
 
 # ─── Tabs ────────────────────────────────────────────────────────────────────────
 tab1, tab2, tab3, tab4 = st.tabs([
-    "🔮 Prediction",
-    "📊 EDA & Charts",
-    "⚙️ Model Performance",
-    "📖 About Project",
+    " Prediction",
+    " EDA & Charts",
+    " Model Performance",
+    " About Project",
 ])
 
 
@@ -197,7 +195,7 @@ with tab1:
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.markdown('<div class="section-title">👤 Personal Info</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-title"> Personal Info</div>', unsafe_allow_html=True)
         age = st.slider("Age", 18, 60, 30)
         gender = st.selectbox("Gender", X_raw['Gender'].unique())
         marital_status = st.selectbox("Marital Status", X_raw['MaritalStatus'].unique())
@@ -205,7 +203,7 @@ with tab1:
         education = st.slider("Education Level (1–5)", 1, 5, 3)
 
     with col2:
-        st.markdown('<div class="section-title">💼 Job Details</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-title"> Job Details</div>', unsafe_allow_html=True)
         job_role = st.selectbox("Job Role", sorted(X_raw['JobRole'].unique()))
         department = st.selectbox("Department", X_raw['Department'].unique())
         job_level = st.slider("Job Level (1–5)", 1, 5, 2)
@@ -213,7 +211,7 @@ with tab1:
         work_life_balance = st.slider("Work-Life Balance (1–4)", 1, 4, 3)
 
     with col3:
-        st.markdown('<div class="section-title">💰 Compensation & Time</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-title"> Compensation & Time</div>', unsafe_allow_html=True)
         monthly_income = st.slider("Monthly Income ($)", 1000, 20000, 5000, step=100)
         years_at_company = st.slider("Years at Company", 0, 40, 5)
         years_in_role = st.slider("Years in Current Role", 0, 20, 3)
@@ -225,7 +223,7 @@ with tab1:
     # Predict button – centered
     _, btn_col, _ = st.columns([2, 1, 2])
     with btn_col:
-        predict_clicked = st.button("🔍 Predict Attrition Risk", type="primary", use_container_width=True)
+        predict_clicked = st.button(" Predict Attrition Risk", type="primary", use_container_width=True)
 
     if predict_clicked:
         # Build input dict with median/mode defaults
@@ -268,10 +266,10 @@ with tab1:
 
         with res_col1:
             if is_high_risk:
-                st.error("### ⚠️ HIGH RISK — Likely to Leave")
+                st.error("###  HIGH RISK — Likely to Leave")
                 st.write("Consider discussing **career progression**, **salary hike**, or **reducing overtime load**.")
             else:
-                st.success("### ✅ LOW RISK — Likely to Stay")
+                st.success("###  LOW RISK — Likely to Stay")
                 st.write("This employee appears satisfied and engaged with their current role.")
 
             if proba is not None:
@@ -279,7 +277,7 @@ with tab1:
                 st.metric("Attrition Probability", f"{risk_pct}%")
 
         with res_col2:
-            st.info("**📋 Evaluated Parameters**")
+            st.info("** Evaluated Parameters**")
             summary = {
                 "Age": age, "Gender": gender, "Job Role": job_role,
                 "Department": department, "Monthly Income": f"${monthly_income:,}",
@@ -302,10 +300,10 @@ with tab2:
     st.subheader("Exploratory Data Analysis")
 
     # Data preview
-    st.markdown("#### 📋 Data Preview")
+    st.markdown("####  Data Preview")
     st.dataframe(df_full.head(100), use_container_width=True, height=280)
 
-    with st.expander("📈 View Summary Statistics"):
+    with st.expander(" View Summary Statistics"):
         st.dataframe(df_full.describe(), use_container_width=True)
 
     st.divider()
@@ -314,7 +312,7 @@ with tab2:
     c1, c2 = st.columns(2)
 
     with c1:
-        st.markdown('<div class="section-title">🍩 Overall Attrition Rate</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-title"> Overall Attrition Rate</div>', unsafe_allow_html=True)
         attrition_counts = df_full['Attrition'].value_counts().reset_index()
         attrition_counts.columns = ['Attrition', 'Count']
         fig_donut = px.pie(
@@ -328,7 +326,7 @@ with tab2:
         st.plotly_chart(fig_donut, use_container_width=True)
 
     with c2:
-        st.markdown('<div class="section-title">💰 Monthly Income vs. Attrition</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-title"> Monthly Income vs. Attrition</div>', unsafe_allow_html=True)
         fig_box = px.box(
             df_full, x='Attrition', y='MonthlyIncome',
             color='Attrition',
@@ -342,7 +340,7 @@ with tab2:
     c3, c4 = st.columns(2)
 
     with c3:
-        st.markdown('<div class="section-title">🏢 Attrition by Job Role</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-title"> Attrition by Job Role</div>', unsafe_allow_html=True)
         role_attr = (
             df_full.groupby(['JobRole', 'Attrition'])
             .size().reset_index(name='Count')
@@ -356,7 +354,7 @@ with tab2:
         st.plotly_chart(fig_bar, use_container_width=True)
 
     with c4:
-        st.markdown('<div class="section-title">👥 Age Distribution by Attrition</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-title"> Age Distribution by Attrition</div>', unsafe_allow_html=True)
         fig_hist = px.histogram(
             df_full, x='Age', color='Attrition',
             nbins=25, barmode='overlay', opacity=0.75,
@@ -391,10 +389,10 @@ with tab3:
 
     # Top-level metric cards
     m1, m2, m3, m4 = st.columns(4)
-    m1.metric("✅ Accuracy",  f"{acc:.1%}")
-    m2.metric("🎯 Precision", f"{prec:.1%}")
-    m3.metric("📡 Recall",    f"{rec:.1%}")
-    m4.metric("⚖️ F1 Score",  f"{f1:.1%}")
+    m1.metric(" Accuracy",  f"{acc:.1%}")
+    m2.metric(" Precision", f"{prec:.1%}")
+    m3.metric(" Recall",    f"{rec:.1%}")
+    m4.metric(" F1 Score",  f"{f1:.1%}")
 
     st.divider()
 
@@ -402,7 +400,7 @@ with tab3:
 
     # Confusion Matrix
     with perf_col1:
-        st.markdown('<div class="section-title">🗂️ Confusion Matrix</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-title"> Confusion Matrix</div>', unsafe_allow_html=True)
         cm = confusion_matrix(y_true, y_pred)
         labels = ['No Attrition (0)', 'Attrition (1)']
         fig_cm = px.imshow(
@@ -419,7 +417,7 @@ with tab3:
 
     # Classification Report
     with perf_col2:
-        st.markdown('<div class="section-title">📄 Classification Report</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-title"> Classification Report</div>', unsafe_allow_html=True)
         report = classification_report(y_true, y_pred,
                                        target_names=['No Attrition', 'Attrition'],
                                        output_dict=True)
@@ -429,7 +427,7 @@ with tab3:
     st.divider()
 
     # PCA 2D Scatter
-    st.markdown('<div class="section-title">🔵 PCA Component Space — Actual Labels</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title"> PCA Component Space — Actual Labels</div>', unsafe_allow_html=True)
     st.caption("Shows how well the two PCA components separate the two classes.")
     pca_df = pd.DataFrame({
         'PC1': X_pca[:, 0],
@@ -452,13 +450,13 @@ with tab3:
 # ════════════════════════════════════════════════════════════════════════════════
 with tab4:
     st.markdown("""
-## 📖 About This Project
+##  About This Project
 
 Welcome to the **HR Employee Attrition & Retention Dashboard**. This powerful analytical tool goes beyond standard reporting to provide actionable, predictive insights using advanced Machine Learning. 
 
 ---
 
-### 🎯 The Core Mission
+###  The Core Mission
 
 In today's competitive landscape, employee retention is critical. Replacing an employee often costs anywhere from 50% to 200% of their annual salary. Our dashboard empowers HR professionals and organizational leaders to proactively tackle attrition by understanding the *why* behind employee turnover.
 
@@ -469,7 +467,7 @@ By utilizing this tool, your organization can:
 
 ---
 
-### 📦 Dataset Overview
+###  Dataset Overview
 
 This project is built atop the renowned **IBM HR Analytics Employee Attrition & Performance** dataset, originally devised by IBM data scientists. 
 
@@ -489,7 +487,7 @@ This project is built atop the renowned **IBM HR Analytics Employee Attrition & 
 
 ---
 
-### ⚙️ Machine Learning Pipeline Architecture
+###  Machine Learning Pipeline Architecture
 
 To achieve accurate forecasting, the data traverses a rigorous, state-of-the-art modeling pipeline:
 
@@ -509,7 +507,7 @@ Our core classifier, serialized as `attrition_model.pkl`, relies on historical p
 
 ---
 
-### 🛠️ Technology Stack & Tooling
+###  Technology Stack & Tooling
 
 We built this robust analytical product using industry-leading open-source technologies:
 
@@ -525,8 +523,8 @@ We built this robust analytical product using industry-leading open-source techn
 """)
 
     st.markdown("""
-<div style="text-align:center; padding: 1.5rem; background: rgba(30, 27, 75, 0.5); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; margin-top:2rem; color:#cbd5e1; font-size:0.95rem; box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
+<div style="text-align:center; padding: 1.5rem; background: rgba(255, 255, 255, 0.6); backdrop-filter: blur(8px); border: 1px solid rgba(209, 213, 219, 0.5); border-radius: 12px; margin-top:2rem; color:#4b5563; font-size:0.95rem; box-shadow: 0 4px 20px rgba(31, 38, 135, 0.05);">
     <b>Developed by Priyanshu Yadav</b><br>
-    <span style="font-size: 0.85rem; color: #9ca3af;">IBM HR Attrition Capstone Project</span>
+    <span style="font-size: 0.85rem; color: #6b7280;">IBM HR Attrition Capstone Project</span>
 </div>
 """, unsafe_allow_html=True)
